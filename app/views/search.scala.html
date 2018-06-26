@@ -97,11 +97,11 @@
 @facetLink(key: String, term: String, label:String, count: Int) = {
 	@if(f.contains(key+":"+term)){
 		@Html(label)
-		<a href='@routes.HomeController.search(q, f.replace(s"+($key:$term)", "").replace(s"$key:$term","").trim)'>
+		<a class='@key-facet-link' href='@routes.HomeController.search(q, f.replace(s"+($key:$term)", "").replace(s"$key:$term","").trim, from, size)'>
 		<span class="badge">Filter entfernen <span class="glyphicon glyphicon-remove"></span></span>
 		</a>
 	} else {
-		<a href='@routes.HomeController.search(q, s"$f +($key:$term)".trim)'>@Html(label) (@formatCount(count))</a>
+		<a class='@key-facet-link' href='@routes.HomeController.search(q, s"$f +($key:$term)".trim, from, size)'>@Html(label) (@formatCount(count))</a>
 	}
 }
 
@@ -226,7 +226,27 @@
 						@facet("gndSubjectCategory.id")
 						@facet("geographicAreaCode.id")
 						@facet("professionOrOccupation.id")
-						@*@facet("dateOfBirth")*@
+						@if(!(Json.parse(result) \ "aggregation" \ "dateOfBirth").asOpt[Seq[JsValue]].getOrElse(Seq()).isEmpty) {
+							<span id='dateOfBirth-facet-text'>@facet("dateOfBirth")</span>
+							<div id="dateOfBirth-facet">
+								<h5>
+									@models.GndOntology.label("dateOfBirth") 
+									@if(f.contains("dateOfBirth")){
+										<a href='@routes.HomeController.search(q, f.replaceAll("\\+?(dateOfBirth:[^)]+)", "").replaceAll("dateOfBirth:[^\\]]+]","").trim, from, size)'>
+										<span class="badge">Filter entfernen <span class="glyphicon glyphicon-remove"></span></span>
+										</a>
+									}
+								</h5>
+								<div id="dateOfBirth-facet-all" style="display:none">
+									<div class="row facet"><div class="col-md-12"></div></div>
+									<div class="row facet"><div class="col-md-12"><canvas id="dateOfBirth-chart"></canvas></div></div>
+									<div id="slider-range"></div>
+									<input type="text" id="dateOfBirth-range" readonly value="Lade Jahre...">
+									<div id="dateOfBirth-div"> <a id="dateOfBirth-link" style="display:none" href="?">Anwenden</a> </div>
+								</div>
+							</div>
+							@year_facet(f)
+						}
 					}
 				}
 			</p>

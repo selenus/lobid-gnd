@@ -218,4 +218,36 @@ h5 {
 
 .label a:hover {
     color: white !important;
+	height: 400px
+}
+
+.ui-slider .ui-slider-handle {
+	width: 8px !important;
+	margin-left: -4px !important;
+}
+
+.ui-slider .ui-slider-range {
+	background-color: #E6E6E6;
+}
+
+#dateOfBirth-range {
+	border: 0;
+	text-align: center;
+	width: 100%;
+}
+
+#dateOfBirth-div {
+	width: 100%;
+	text-align: center
+}
+
+#slider-range {
+	width: 100%;
+	margin-top: 5px;
+}
+
+#dateOfBirth-chart {
+	width: 100%;
+	height: 50px;
+	cursor: pointer;
 }
